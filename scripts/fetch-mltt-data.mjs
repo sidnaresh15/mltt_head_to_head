@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import { mkdir, readFile, rename, stat, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { goldenPlayerPoints } from './golden-score.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUTPUT = join(ROOT, 'public', 'data', 'mltt.json');
@@ -215,8 +216,8 @@ function normalizeGoldenRound(match, event, season, scorecard) {
     return {
       playerAId: playerA.id,
       playerBId: playerB.id,
-      pointsA: numberOrZero(roundA.playerScores[playerA.raw.id]),
-      pointsB: numberOrZero(roundB.playerScores[playerB.raw.id]),
+      pointsA: goldenPlayerPoints(roundA.playerScores, playerA.raw.id, index),
+      pointsB: goldenPlayerPoints(roundB.playerScores, playerB.raw.id, index),
     };
   });
 
